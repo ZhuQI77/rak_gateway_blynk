@@ -6,10 +6,10 @@ class rak_db:
     def __init__(self):
         try:
 #            self._redis = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
-            self._as_conn = psycopg2.connect(database="loraserver_as", user="rak_blynk", password="rak_blynk",
-                                            host="192.168.6.90", port="5432")
+            self._as_conn = psycopg2.connect(database="loraserver_as", user="loraserver_as", password="dbpassword",
+                                            host="127.0.0.1", port="5432")
             self._blynk_conn = psycopg2.connect(database="rak_blynk", user="rak_blynk", password="rak_blynk",
-                                            host="192.168.6.90", port="5432")
+                                            host="127.0.0.1", port="5432")
         except Exception as e:
             print(e)
             exit(-1)
@@ -36,7 +36,7 @@ class rak_db:
         print('insert_node_data')
         cur = self._blynk_conn.cursor()
         try:
-            cur.execute("INSERT INTO log_node  (dev_eui, create_at, humidity, temperature ) VALUES(\'%s\', NOW(), %d, %d)"
+            cur.execute("INSERT INTO log_node(dev_eui, create_at, humidity, temperature ) VALUES(\'%s\', NOW(), %d, %d)"
                         % (dev_eui, humidity, temperature))
             self._blynk_conn.commit()
         except Exception as e:
